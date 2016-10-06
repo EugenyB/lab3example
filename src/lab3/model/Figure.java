@@ -1,42 +1,44 @@
-package sample;
+package lab3.model;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * Created by eugeny on 08.10.2015.
+ * Created by Eugeny Berkunsky on 08.10.2015.
+ * Modified 05.10.2016
  */
-public class Figure {
-    double[] x = {150, 100, 200, 200, 100};
-    double[] y = {50,  100, 100, 200, 200};
 
-    int[][] p = {
+public class Figure {
+    private double[] x = {150, 100, 200, 200, 100};
+    private double[] y = {50,  100, 100, 200, 200};
+
+    private int[][] polygons = {
             {0,1,2},
             {1,4,3,2}
     };
 
-    double[][] matrix = {
-            {1,0,0},{0,1,0},{0,0,1}
+    private double[][] matrix = {
+            {1,0,0}, {0,1,0}, {0,0,1}
     };
 
-    double fx(double x, double y) {
+    private double fx(double x, double y) {
         return matrix[0][0] * x + matrix[0][1] * y + matrix[0][2];
     }
 
-    double fy(double x, double y) {
+    private double fy(double x, double y) {
         return matrix[1][0] * x + matrix[1][1] * y + matrix[1][2];
     }
 
     public void draw(GraphicsContext gc, Color color) {
         gc.setStroke(color);
-        for (int i = 0; i < p.length; i++) {
-            double[] xe = new double[p[i].length];
-            double[] ye = new double[p[i].length];
+        for (int[] polygon : polygons) {
+            double[] xe = new double[polygon.length];
+            double[] ye = new double[polygon.length];
             for (int j = 0; j < xe.length; j++) {
-                xe[j] = fx(x[p[i][j]],y[p[i][j]]);
-                ye[j] = fy(x[p[i][j]], y[p[i][j]]);
+                xe[j] = fx(x[polygon[j]], y[polygon[j]]);
+                ye[j] = fy(x[polygon[j]], y[polygon[j]]);
             }
-            gc.strokePolygon(xe,ye,xe.length);
+            gc.strokePolygon(xe, ye, xe.length);
         }
     }
 
@@ -68,5 +70,12 @@ public class Figure {
             }
         }
         return result;
+    }
+
+    public void scale(double v) {
+        double[][] t = {
+                {v,0,0},{0,v,0},{0,0,1}
+        };
+        matrix = multMatrix(t,matrix);
     }
 }
