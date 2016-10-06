@@ -1,6 +1,7 @@
 package lab3.model;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 
 /**
@@ -30,6 +31,9 @@ public class Figure {
     }
 
     public void draw(GraphicsContext gc, Color color) {
+        PixelWriter pixelWriter = gc.getPixelWriter();
+        pixelWriter.setColor(120,120, Color.RED);
+        pixelWriter.setColor(121,120, Color.RED);
         gc.setStroke(color);
         for (int[] polygon : polygons) {
             double[] xe = new double[polygon.length];
