@@ -7,14 +7,14 @@ import lab3.controller.Controller;
 
 /**
  * Created by Eugeny Berkunsky on 08.10.2015.
- * Modified 05.10.2016
+ * Modified 05.10.2024
  */
 
 public class Figure {
-    private double[] x = {150, 100, 200, 200, 100};
-    private double[] y = {50,  100, 100, 200, 200};
+    private final double[] x = {150, 100, 200, 200, 100};
+    private final double[] y = {50,  100, 100, 200, 200};
 
-    private int[][] polygons = {
+    private final int[][] polygons = {
             {0,1,2},
             {1,4,3,2}
     };
