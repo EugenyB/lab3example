@@ -3,6 +3,7 @@ package lab3.model;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
+import lab3.controller.Controller;
 
 /**
  * Created by Eugeny Berkunsky on 08.10.2015.
@@ -32,8 +33,8 @@ public class Figure {
 
     public void draw(GraphicsContext gc, Color color) {
         PixelWriter pixelWriter = gc.getPixelWriter();
-        pixelWriter.setColor(120,120, Color.RED);
-        pixelWriter.setColor(121,120, Color.RED);
+//        pixelWriter.setColor(120,120, Color.RED);
+//        pixelWriter.setColor(121,120, Color.RED);
         gc.setStroke(color);
         for (int[] polygon : polygons) {
             double[] xe = new double[polygon.length];
@@ -47,29 +48,33 @@ public class Figure {
     }
 
     public void rotate(double alpha) {
+        double cx = Controller.getCx();
+        double cy = Controller.getCy();
+
         double cos = Math.cos(Math.toRadians(alpha));
         double sin = Math.sin(Math.toRadians(alpha));
 
         double[][] r = {
                 {cos, -sin, 0},{sin, cos, 0},{0,0,1}
         };
-
-        matrix = multMatrix(r,matrix);
+        move(-cx,-cy);
+        matrix = productOfMatrices(r,matrix);
+        move(cx,cy);
     }
 
     public void move(double dx, double dy) {
         double[][] t = {
                 {1,0,dx},{0,1,dy},{0,0,1}
         };
-        matrix = multMatrix(t,matrix);
+        matrix = productOfMatrices(t,matrix);
     }
 
-    private double[][] multMatrix(double[][] r, double[][] matrix) {
+    private double[][] productOfMatrices(double[][] a, double[][] b) {
         double[][] result = new double[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 for (int k = 0; k < 3; k++) {
-                    result[i][j] += r[i][k] * matrix[k][j];
+                    result[i][j] += a[i][k] * b[k][j];
                 }
             }
         }
@@ -77,9 +82,14 @@ public class Figure {
     }
 
     public void scale(double v) {
+        double cx = Controller.getCx();
+        double cy = Controller.getCy();
+
         double[][] t = {
                 {v,0,0},{0,v,0},{0,0,1}
         };
-        matrix = multMatrix(t,matrix);
+        move(-cx, -cy);
+        matrix = productOfMatrices(t,matrix);
+        move(cx, cy);
     }
 }

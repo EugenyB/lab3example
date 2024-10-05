@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import lab3.model.Figure;
@@ -15,15 +16,25 @@ import lab3.model.Figure;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable{
+public class Controller {
 
     private static final double DELTA = 5;
     @FXML Pane mainPanel;
     @FXML Canvas canvas;
 
     Figure f = new Figure();
+    static double cx = 0;
+    static double cy = 0;
 
-    public void drawFigure(ActionEvent actionEvent) {
+    public static double getCx() {
+        return cx;
+    }
+
+    public static double getCy() {
+        return cy;
+    }
+
+    public void drawFigure() {
         draw();
     }
 
@@ -31,18 +42,18 @@ public class Controller implements Initializable{
         f.move(-150,-150);
         f.rotate(10);
         f.move(150,150);
-        drawFigure(actionEvent);
+        drawFigure();
     }
 
     public void rotateMinus(ActionEvent actionEvent) {
         f.move(-150,-150);
         f.rotate(-10);
         f.move(150,150);
-        drawFigure(actionEvent);
+        drawFigure();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    //@Override
+    public void initialize() {
         canvas.widthProperty().bind(mainPanel.widthProperty());
         canvas.heightProperty().bind(mainPanel.heightProperty());
         canvas.widthProperty().addListener(e->draw());
@@ -53,8 +64,10 @@ public class Controller implements Initializable{
     private void draw() {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITESMOKE);
-
         gc.fillRect(0,0,canvas.getWidth(), canvas.getHeight());
+        gc.setStroke(Color.RED);
+        gc.strokeRect(cx-1, cy-1, 3, 3);
+
         f.draw(gc, Color.BLUE);
     }
 
@@ -90,6 +103,12 @@ public class Controller implements Initializable{
                 f.rotate(-10);
                 break;
         }
+        draw();
+    }
+
+    public void processClick(MouseEvent mouseEvent) {
+        cx = mouseEvent.getX();
+        cy = mouseEvent.getY();
         draw();
     }
 }
