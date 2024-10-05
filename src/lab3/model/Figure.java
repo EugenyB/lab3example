@@ -32,7 +32,7 @@ public class Figure {
     }
 
     public void draw(GraphicsContext gc, Color color) {
-        PixelWriter pixelWriter = gc.getPixelWriter();
+//        PixelWriter pixelWriter = gc.getPixelWriter();
 //        pixelWriter.setColor(120,120, Color.RED);
 //        pixelWriter.setColor(121,120, Color.RED);
         gc.setStroke(color);
